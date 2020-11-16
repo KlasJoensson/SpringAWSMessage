@@ -10,15 +10,19 @@ import org.springframework.web.bind.annotation.GetMapping;
 /**
  * A Java class that represents the controller for this application.
  */
-// TODO Use constructor to autowire...
 @Controller
 public class GreetingController {
-	@Autowired
+	
 	private DynamoDBEnhanced dde;
 
-	@Autowired
 	private PublishTextSMS msg;
 
+	@Autowired
+	public GreetingController(DynamoDBEnhanced dDB, PublishTextSMS smsMessage) {
+		this.dde = dDB;
+		this.msg = smsMessage;
+	}
+	
 	@GetMapping("/")
 	public String greetingForm(Model model) {
 		model.addAttribute("greeting", new Greeting());
