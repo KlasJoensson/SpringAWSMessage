@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 /**
  * A Java class that represents the controller for this application.
  */
+// TODO Use constructor to autowire...
 @Controller
 public class GreetingController {
 	@Autowired
