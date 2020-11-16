@@ -1,5 +1,7 @@
 package com.example.handlingformsubmission;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
 import static software.amazon.awssdk.enhanced.dynamodb.mapper.StaticAttributeTags.primaryPartitionKey;
 import software.amazon.awssdk.auth.credentials.EnvironmentVariableCredentialsProvider;
@@ -15,7 +17,6 @@ import software.amazon.awssdk.services.dynamodb.model.ProvisionedThroughput;
 /**
  * A Java class that injects data into a DynamoDB table by using the DynamoDB enhanced client API
  */
-//TODO Use another region? Set it in a properties file instead? 
 @Component("DynamoDBEnhanced")
 public class DynamoDBEnhanced {
 
@@ -43,10 +44,18 @@ public class DynamoDBEnhanced {
 					.setter(GreetingItems::setMessage))
 			.build();
 
+	private Environment env;
+	
+	@Autowired
+	public DynamoDBEnhanced(Environment env) {
+		this.env =env;
+	}
+	
 	// Uses the enhanced client to inject a new post into a DynamoDB table
 	public void injectDynamoItem(Greeting item){
 
-		Region region = Region.US_EAST_1;
+		Region region = Region.of(env.getProperty("aws.region"));
+		
 		DynamoDbClient ddb = DynamoDbClient.builder()
 				.region(region)
 				.credentialsProvider(EnvironmentVariableCredentialsProvider.create())
