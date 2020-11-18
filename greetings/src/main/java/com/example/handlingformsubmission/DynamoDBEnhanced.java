@@ -1,5 +1,6 @@
 package com.example.handlingformsubmission;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
@@ -20,6 +21,8 @@ import software.amazon.awssdk.services.dynamodb.model.ProvisionedThroughput;
 @Component("DynamoDBEnhanced")
 public class DynamoDBEnhanced {
 
+	private static Logger log = Logger.getLogger(DynamoDBEnhanced.class);
+	
 	private final ProvisionedThroughput DEFAULT_PROVISIONED_THROUGHPUT =
 			ProvisionedThroughput.builder()
 			.readCapacityUnits(50L)
@@ -80,8 +83,13 @@ public class DynamoDBEnhanced {
 					.build();
 
 			mappedTable.putItem(enReq);
-
+			
+			log.debug("Stored a message in DynamoDB in the region " + region.toString());
+		
 		} catch (Exception e) {
+			
+			log.error("An error occurred trying to store a message in the region " + region.toString() + ": " + e.getMessage());
+			
 			e.getStackTrace();
 		}
 	}
