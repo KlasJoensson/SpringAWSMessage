@@ -1,10 +1,15 @@
 package com.example.handlingformsubmission;
 
+
+import org.apache.log4j.LogManager;
+>>>>>>> mytemp
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
 import static software.amazon.awssdk.enhanced.dynamodb.mapper.StaticAttributeTags.primaryPartitionKey;
+
+
 import software.amazon.awssdk.auth.credentials.EnvironmentVariableCredentialsProvider;
 import software.amazon.awssdk.enhanced.dynamodb.DynamoDbEnhancedClient;
 import software.amazon.awssdk.enhanced.dynamodb.DynamoDbTable;
@@ -21,7 +26,7 @@ import software.amazon.awssdk.services.dynamodb.model.ProvisionedThroughput;
 @Component("DynamoDBEnhanced")
 public class DynamoDBEnhanced {
 
-	private static Logger log = Logger.getLogger(DynamoDBEnhanced.class);
+	private static Logger log = LogManager.getLogger(DynamoDBEnhanced.class);
 	
 	private final ProvisionedThroughput DEFAULT_PROVISIONED_THROUGHPUT =
 			ProvisionedThroughput.builder()

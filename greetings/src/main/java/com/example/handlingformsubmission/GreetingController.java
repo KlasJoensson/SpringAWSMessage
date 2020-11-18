@@ -1,5 +1,7 @@
 package com.example.handlingformsubmission;
 
+
+import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -18,7 +20,8 @@ public class GreetingController {
 	
 	private PublishTextSMS msg;
 	
-	private static Logger log = Logger.getLogger(GreetingController.class);
+
+	private static Logger log = LogManager.getLogger(GreetingController.class);
 
 	@Autowired
 	public GreetingController(DynamoDBEnhanced dDB, PublishTextSMS smsMessage) {

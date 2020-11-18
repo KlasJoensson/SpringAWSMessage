@@ -1,5 +1,7 @@
 package com.example.handlingformsubmission;
 
+import org.apache.log4j.LogManager;
+>>>>>>> mytemp
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
@@ -20,7 +22,7 @@ public class PublishTextSMS {
 
 	private Environment env;
 	
-	private static Logger log = Logger.getLogger(PublishTextSMS.class);
+	private static Logger log = LogManager.getLogger(PublishTextSMS.class);
 	
 	@Autowired
 	public PublishTextSMS(Environment env) {
@@ -37,7 +39,9 @@ public class PublishTextSMS {
 				.build();
 		String message = "A new item with ID value "+ id +" was added to the DynamoDB table";
 		String phoneNumber=env.getProperty("phone");
-
+		if (phoneNumber == null) {
+			log.debug("No phonenumber found...");
+		}
 		try {
 			PublishRequest request = PublishRequest.builder()
 					.message(message)
