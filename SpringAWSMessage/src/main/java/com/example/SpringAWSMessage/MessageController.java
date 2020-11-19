@@ -18,10 +18,14 @@ import org.springframework.web.bind.annotation.ResponseBody;
  */
 @Controller
 public class MessageController {
-
-	@Autowired
+	
 	SendReceiveMessages msgService;
 
+	@Autowired
+	public MessageController(SendReceiveMessages service) {
+		this.msgService = service;
+	}
+	
 	@GetMapping("/")
 	public String root() {
 		return "index";
