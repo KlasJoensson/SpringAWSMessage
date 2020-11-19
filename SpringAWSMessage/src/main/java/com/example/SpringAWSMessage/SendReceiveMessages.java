@@ -16,6 +16,8 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -36,11 +38,19 @@ import software.amazon.awssdk.services.sqs.model.SqsException;
 @Component
 public class SendReceiveMessages {
 
-	private final String QUEUE_NAME = "Message.fifo";
-
+	private String queueName;
+	private Region region;
+	
+	@Autowired
+	public SendReceiveMessages(Environment env) {
+		this.region = Region.of(env.getProperty("aws.region"));
+		this.queueName = env.getProperty("queue.name");
+	}
+	
 	private SqsClient getClient() {
+		
 		SqsClient sqsClient = SqsClient.builder()
-				.region(Region.US_WEST_2)
+				.region(region)
 				.credentialsProvider(EnvironmentVariableCredentialsProvider.create())
 				.build();
 
@@ -53,7 +63,7 @@ public class SendReceiveMessages {
 		SqsClient sqsClient = getClient();
 
 		GetQueueUrlRequest getQueueRequest = GetQueueUrlRequest.builder()
-				.queueName(QUEUE_NAME)
+				.queueName(queueName)
 				.build();
 
 		PurgeQueueRequest queueRequest = PurgeQueueRequest.builder()
@@ -73,7 +83,7 @@ public class SendReceiveMessages {
 		try {
 
 			GetQueueUrlRequest getQueueRequest = GetQueueUrlRequest.builder()
-					.queueName(QUEUE_NAME)
+					.queueName(queueName)
 					.build();
 
 			String queueUrl = sqsClient.getQueueUrl(getQueueRequest).queueUrl();
@@ -114,7 +124,7 @@ public class SendReceiveMessages {
 	public void processMessage(Message msg) {
 
 		SqsClient sqsClient = SqsClient.builder()
-				.region(Region.US_WEST_2)
+				.region(region)
 				.build();
 
 
@@ -131,7 +141,7 @@ public class SendReceiveMessages {
 
 
 			GetQueueUrlRequest getQueueRequest = GetQueueUrlRequest.builder()
-					.queueName(QUEUE_NAME)
+					.queueName(queueName)
 					.build();
 
 			String queueUrl = sqsClient.getQueueUrl(getQueueRequest).queueUrl();
