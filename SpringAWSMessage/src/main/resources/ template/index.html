@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+ <html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+ <head>
+<meta charset="utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+<link rel="stylesheet" th:href="|https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css|"/>
+<link rel="stylesheet" href="../public/css/styles.css" th:href="@{/css/styles.css}" />
+<link rel="icon" href="../public/images/favicon.ico" th:href="@{/images/favicon.ico}" />
+
+<title>AWS Messaging</title>
+</head>
+
+<body>
+<header th:replace="layout :: site-header"/>
+<div class="container">
+
+<h2>AWS Messaging application</h2>
+
+<p>The AWS Messaging application is an example application that uses Amazon SQS and other AWS services and the AWS SDK for Java version 2 API.
+ Working with messages has never been easier. Just perform these steps:<p>
+
+   <ol>
+
+    <li>You can send a new message by choosing the <b>Send Messages</b> menu item. Select a user from the form, enter a message, and then choose <b>Send</b>.</li>
+    <li>The AWS Messaging application stores the message in a FIFO queue. This queue ensures that the order of the messages is consistent.</li>
+    <li>The AWS Messaging application polls the queue for all messages in the FIFO queue.</li>
+    <li>The AWS Messaging application displays the message data in the view. The message body, user name, and an avatar are displayed.</li>
+    <li>You can send and view multiple messages by using the AWS Messaging application. </li>
+     <li>You can purge the queue. </li>
+    </ol>
+ <div>
+</body>
+</html>
