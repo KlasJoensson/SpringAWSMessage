@@ -5,6 +5,8 @@ import java.util.UUID;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -19,8 +21,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @Controller
 public class MessageController {
 	
-	SendReceiveMessages msgService;
-
+	private SendReceiveMessages msgService;
+	private Logger logger = LoggerFactory.getLogger(SendReceiveMessages.class);
+	
 	@Autowired
 	public MessageController(SendReceiveMessages service) {
 		this.msgService = service;
@@ -35,7 +38,8 @@ public class MessageController {
 	@RequestMapping(value = "/purge", method = RequestMethod.GET)
 	@ResponseBody
 	String purgeMessages(HttpServletRequest request, HttpServletResponse response) {
-
+		
+		logger.debug("Receives a request to purge the queue");
 		msgService.purgeMyQueue();
 		return "Queue is purged";
 	}
@@ -55,6 +59,8 @@ public class MessageController {
 	@ResponseBody
 	String addItems(HttpServletRequest request, HttpServletResponse response) {
 
+		logger.debug("Receives a request to add an item");
+		
 		String user = request.getParameter("user");
 		String message = request.getParameter("message");
 

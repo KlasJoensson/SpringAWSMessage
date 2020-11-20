@@ -16,6 +16,8 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
@@ -40,6 +42,7 @@ public class SendReceiveMessages {
 
 	private String queueName;
 	private Region region;
+	private Logger logger = LoggerFactory.getLogger(SendReceiveMessages.class);
 	
 	@Autowired
 	public SendReceiveMessages(Environment env) {
@@ -116,8 +119,9 @@ public class SendReceiveMessages {
 			return convertToString(toXml(allMessages));
 
 		} catch (SqsException e) {
-			e.getStackTrace();
+			logger.error("An error occurred when retrieving the the queue: " + e.getLocalizedMessage());
 		}
+		
 		return "";
 	}
 
@@ -161,7 +165,8 @@ public class SendReceiveMessages {
 
 
 		} catch (SqsException e) {
-			e.getStackTrace();
+			logger.error("An error occurred when processing the message with id '" + 
+					msg.getId() + "': " + e.getLocalizedMessage());
 		}
 	}
 
@@ -205,7 +210,7 @@ public class SendReceiveMessages {
 
 			return doc;
 		} catch(ParserConfigurationException e) {
-			e.printStackTrace();
+			logger.error("An error occurred while the messages were parsed: " + e.getLocalizedMessage());
 		}
 		return null;
 	}
@@ -219,7 +224,8 @@ public class SendReceiveMessages {
 			return result.getWriter().toString();
 
 		} catch(TransformerException ex) {
-			ex.printStackTrace();
+			logger.error("An error occurred while converting the XLM document to a string" 
+					+ ex.getLocalizedMessage());
 		}
 		return null;
 	}
